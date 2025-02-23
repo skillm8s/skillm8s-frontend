@@ -1,0 +1,26 @@
+// This is your Prisma schema file
+
+// Define the database connection
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Define the Prisma Client generator
+generator client {
+  provider = "prisma-client-js"
+}
+
+// Models
+model WaitlistEntry {
+  id        String   @id @default(cuid())
+  firstName String
+  lastName  String
+  email     String   @unique
+  userType  String   // 'customer' or 'provider'
+  country   String
+  state     String
+  city      String
+  services  Json?    // Store services as JSON
+  createdAt DateTime @default(now())
+} 

@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="220" height="40" viewBox="0 0 220 40">
+  <defs>
+    <!-- Define a left-to-right linear gradient from blue-600 (#2563EB) to blue-400 (#60A5FA) -->
+    <linearGradient id="text-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#2563EB"/>
+      <stop offset="100%" stop-color="#60A5FA"/>
+    </linearGradient>
+  </defs>
+  <!-- Blue square with rounded corners (40x40px, radius 8px) -->
+  <rect x="0" y="0" width="40" height="40" rx="8" ry="8" fill="#2563EB"/>
+  <!-- Centered emoji inside the square -->
+  <text x="20" y="20" text-anchor="middle" dominant-baseline="middle" font-size="20" font-weight="bold" fill="#ffffff">🛠️</text>
+  <!-- "SkillM8s" text with gradient fill; positioned with an 8px gap (x=48) -->
+  <text x="48" y="20" dominant-baseline="middle" font-size="24" font-weight="bold" fill="url(#text-gradient)">SkillM8s</text>
+</svg>
+
