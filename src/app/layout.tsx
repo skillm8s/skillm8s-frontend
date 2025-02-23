@@ -1,7 +1,6 @@
 import Header from '@/app/components/layout/Header';
 import Footer from '@/app/components/layout/Footer';
 import '@/styles/globals.css';
-import Hero from './components/home/Hero';
 
 export const metadata = {
   title: 'SkillM8s - On-Demand Home Services & Professional Handyman Platform',

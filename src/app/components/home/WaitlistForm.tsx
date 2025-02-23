@@ -93,7 +93,7 @@ export default function WaitlistForm() {
             Join Our Waitlist
           </h2>
           <p className="text-xl font-bold text-black mb-8">
-            Be the first to know when SkillM8s launches in your area.
+            You&apos;ll be the first to know when SkillM8s launches in your area.
           </p>
         </div>
         
@@ -109,7 +109,7 @@ export default function WaitlistForm() {
                   : 'border-gray-200 hover:border-blue-200'
               }`}
             >
-              <h3 className="font-semibold text-black">I'm a Customer</h3>
+              <h3 className="font-semibold text-black">I&apos;m a Customer</h3>
               <p className="text-sm text-gray-500">Looking for services</p>
             </button>
             <button
@@ -121,7 +121,7 @@ export default function WaitlistForm() {
                   : 'border-gray-200 hover:border-blue-200'
               }`}
             >
-              <h3 className="font-semibold text-black">I'm a Service Provider</h3>
+              <h3 className="font-semibold text-black">I&apos;m a Service Provider</h3>
               <p className="text-sm text-gray-500">Offering services</p>
             </button>
           </div>
