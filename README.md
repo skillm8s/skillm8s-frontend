@@ -1,36 +1,131 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# SkillM8s - Service Provider Platform
+
+## Overview
+SkillM8s is a modern web platform connecting service providers with customers for various home services and maintenance needs. Built with Next.js 14, TypeScript, and Prisma, it offers a seamless experience for both service providers and customers.
+
+## Features
+- 🏠 Comprehensive home services marketplace
+- 👥 Dual user types: Service Providers and Customers
+- 📝 Waitlist system for early access
+- 🌐 Responsive design
+- 🔒 Type-safe development with TypeScript
+- 📊 PostgreSQL database integration
+
+## Tech Stack
+- **Frontend**: Next.js 14, React, TailwindCSS
+- **Backend**: Next.js API Routes
+- **Database**: PostgreSQL
+- **ORM**: Prisma
+- **Language**: TypeScript
+- **Styling**: TailwindCSS
+- **Deployment**: Vercel (recommended)
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+- Node.js 18.x or later
+- PostgreSQL database
+- npm or yarn package manager
 
+### Installation
+
+1. Clone the repository
+
+```bash
+git clone https://github.com/yourusername/skillm8s.git
+cd skillm8s
+```
+
+2. Install dependencies
+```bash
+npm install
+# or
+yarn install
+```
+
+3. Set up environment variables
+Create a `.env` file in the root directory:
+```env
+DATABASE_URL="postgresql://username:password@localhost:5432/your_database_name"
+```
+
+4. Set up the database
+```bash
+npx prisma generate
+npx prisma migrate dev
+```
+
+5. Run the development server
 ```bash
 npm run dev
 # or
 yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Visit `http://localhost:3000` to see the application.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Project Structure
+```
+skillm8s/
+├── src/
+│   ├── app/
+│   │   ├── api/
+│   │   │   └── waitlist/
+│   │   ├── components/
+│   │   │   ├── home/
+│   │   │   └── layout/
+│   │   └── page.tsx
+│   └── lib/
+│       └── prisma.ts
+├── prisma/
+│   └── schema.prisma
+├── public/
+└── package.json
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Database Schema
 
-## Learn More
+### WaitlistEntry
+```prisma
+model WaitlistEntry {
+  id        String   @id @default(cuid())
+  firstName String
+  lastName  String
+  email     String   @unique
+  userType  String
+  country   String
+  state     String
+  city      String
+  services  Json?
+  createdAt DateTime @default(now())
+}
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Available Services Categories
+- Outdoor & Yard Services
+- Exterior Home Maintenance
+- Core Home Systems (HVAC, Plumbing, Electrical)
+- Interior Maintenance
+- Home Cleaning & Appearance
+- Specialized Home Services
+- Home Improvement & Lifestyle
+- Home Assessment & Advisory
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Contributing
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## License
+This project is licensed under the MIT License - see the LICENSE file for details.
 
-## Deploy on Vercel
+## Contact
+Your Name - your.email@example.com
+Project Link: https://github.com/yourusername/skillm8s
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Acknowledgments
+- Next.js Documentation
+- Prisma Documentation
+- TailwindCSS Documentation
