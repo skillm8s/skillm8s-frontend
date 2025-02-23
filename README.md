@@ -32,7 +32,7 @@ SkillM8s is a modern web platform connecting service providers with customers fo
 1. Clone the repository
 
 ```bash
-git clone https://github.com/yourusername/skillm8s.git
+git clone https://github.com/skillm8s/skillm8s.git
 cd skillm8s
 ```
 
@@ -83,23 +83,6 @@ skillm8s/
 └── package.json
 ```
 
-## Database Schema
-
-### WaitlistEntry
-```prisma
-model WaitlistEntry {
-  id        String   @id @default(cuid())
-  firstName String
-  lastName  String
-  email     String   @unique
-  userType  String
-  country   String
-  state     String
-  city      String
-  services  Json?
-  createdAt DateTime @default(now())
-}
-```
 
 ## Available Services Categories
 - Outdoor & Yard Services
@@ -123,7 +106,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## Contact
 Your Name - your.email@example.com
-Project Link: https://github.com/yourusername/skillm8s
+Project Link: https://github.com/skillm8s/skillm8s
 
 ## Acknowledgments
 - Next.js Documentation
