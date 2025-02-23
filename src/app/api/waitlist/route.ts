@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import { Prisma } from '@prisma/client';
 
 export async function POST(request: Request) {
   try {
@@ -33,7 +34,7 @@ export async function POST(request: Request) {
         country,
         state,
         city,
-        services: services.length > 0 ? JSON.stringify(services) : null, // Convert array to JSON string
+        services: services.length > 0 ? services : Prisma.JsonNull,
       },
     });
 

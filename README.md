@@ -32,7 +32,7 @@ SkillM8s is a modern web platform connecting service providers with customers fo
 1. Clone the repository
 
 ```bash
-git clone https://github.com/skillm8s/skillm8s.git
+git clone https://github.com/skillm8s/skillm8s-frontend.git
 cd skillm8s
 ```
 
@@ -105,8 +105,8 @@ skillm8s/
 This project is licensed under the MIT License - see the LICENSE file for details.
 
 ## Contact
-Your Name - your.email@example.com
-Project Link: https://github.com/skillm8s/skillm8s
+Your Name - partnerships.skillm8s@gmail.com
+Project Link: https://github.com/skillm8s/skillm8s-frontend
 
 ## Acknowledgments
 - Next.js Documentation
