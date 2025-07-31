@@ -44,7 +44,8 @@ export default function LoginForm() {
       } else {
         setError(data.error || 'Login failed');
       }
-    } catch (err) {
+    } catch (error) {
+      console.error('Login error:', error);
       setError('Network error. Please try again.');
     } finally {
       setLoading(false);
@@ -129,7 +130,7 @@ export default function LoginForm() {
 
       <div className="mt-6 text-center">
         <p className="text-gray-600">
-          Don't have an account?{' '}
+          Don&apos;t have an account?{' '}
           <Link href="/auth/register" className="text-blue-600 hover:text-blue-700 font-medium">
             Create one now
           </Link>

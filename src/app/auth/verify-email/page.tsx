@@ -36,7 +36,8 @@ export default function VerifyEmailPage() {
           setStatus('error');
           setMessage(data.error || 'Verification failed');
         }
-      } catch (err) {
+      } catch (error) {
+        console.error('Email verification error:', error);
         setStatus('error');
         setMessage('Network error. Please try again.');
       }

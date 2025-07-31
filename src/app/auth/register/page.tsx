@@ -15,7 +15,7 @@ export default function RegisterPage() {
               Choose Your Account Type
             </h2>
             <p className="text-gray-600 mb-8">
-              Select how you'd like to use SkillM8s
+              Select how you&apos;d like to use SkillM8s
             </p>
           </div>
 

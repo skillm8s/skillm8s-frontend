@@ -84,7 +84,8 @@ export default function RegisterForm({ userType }: RegisterFormProps) {
       } else {
         setError(data.error || 'Registration failed');
       }
-    } catch (err) {
+    } catch (error) {
+      console.error('Registration error:', error);
       setError('Network error. Please try again.');
     } finally {
       setLoading(false);
