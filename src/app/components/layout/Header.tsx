@@ -78,7 +78,7 @@ export default function Header() {
               { name: 'Services', href: '#services' },
               { name: 'How It Works', href: '#how-it-works' },
               { name: 'About', href: '#about' },
-              { name: 'Profile', href: '/profile' },
+              { name: 'Provider Profile', href: '/provider/profile' },
             ].map((item) => (
               <Link
                 key={item.name}
@@ -157,7 +157,7 @@ export default function Header() {
               { name: 'Services', href: '#services' },
               { name: 'How It Works', href: '#how-it-works' },
               { name: 'About', href: '#about' },
-              { name: 'Profile', href: '/profile' },
+              { name: 'Provider Profile', href: '/provider/profile' },
             ].map((item) => (
               <Link
                 key={item.name}
