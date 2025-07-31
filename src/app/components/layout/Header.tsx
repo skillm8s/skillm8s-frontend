@@ -47,6 +47,7 @@ export default function Header() {
           <nav className="hidden md:flex items-center space-x-8">
             {[
               { name: 'Services', href: '#services' },
+              { name: 'Search', href: '/search' },
               { name: 'How It Works', href: '#how-it-works' },
               { name: 'About', href: '#about' },
             ].map((item) => (
@@ -93,6 +94,7 @@ export default function Header() {
           <div className="py-4 space-y-4">
             {[
               { name: 'Services', href: '#services' },
+              { name: 'Search', href: '/search' },
               { name: 'How It Works', href: '#how-it-works' },
               { name: 'About', href: '#about' },
             ].map((item) => (
