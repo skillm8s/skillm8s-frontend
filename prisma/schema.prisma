@@ -23,4 +23,64 @@ model WaitlistEntry {
   city      String
   services  Json?    // Store services as JSON
   createdAt DateTime @default(now())
+}
+
+model ServiceCategory {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  slug        String   @unique
+  description String?
+  icon        String?
+  accent      String?  // Tailwind gradient classes
+  sortOrder   Int      @default(0)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  // Relations
+  subcategories ServiceSubcategory[]
+  services      Service[]
+}
+
+model ServiceSubcategory {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String
+  description String?
+  sortOrder   Int      @default(0)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  // Foreign Keys
+  categoryId  String
+  category    ServiceCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  
+  // Relations
+  services    Service[]
+  
+  @@unique([categoryId, slug])
+}
+
+model Service {
+  id             String   @id @default(cuid())
+  name           String
+  slug           String
+  description    String?
+  price          Decimal?
+  duration       Int?     // in minutes
+  isActive       Boolean  @default(true)
+  sortOrder      Int      @default(0)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  
+  // Foreign Keys
+  categoryId     String
+  subcategoryId  String?
+  
+  // Relations
+  category       ServiceCategory    @relation(fields: [categoryId], references: [id])
+  subcategory    ServiceSubcategory? @relation(fields: [subcategoryId], references: [id])
+  
+  @@unique([categoryId, slug])
 } 

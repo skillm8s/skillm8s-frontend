@@ -1,77 +1,60 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
-
-const serviceCategories = [
-  {
-    icon: "🌿",
-    title: "Outdoor & Yard Services",
-    description: "Complete outdoor maintenance and landscaping solutions",
-    features: ["Lawn Care", "Tree Services", "Landscaping"],
-    accent: "from-green-500 to-emerald-500",
-    slug: "outdoor-services"
-  },
-  {
-    icon: "🏠",
-    title: "Exterior Home Maintenance",
-    description: "Keep your home's exterior in perfect condition",
-    features: ["Power Washing", "Gutter Services", "Exterior Repairs"],
-    accent: "from-blue-500 to-indigo-500",
-    slug: "exterior-maintenance"
-  },
-  {
-    icon: "🔧",
-    title: "Core Home Systems",
-    description: "Expert HVAC, plumbing, and electrical services",
-    features: ["Plumbing", "HVAC", "Electrical"],
-    accent: "from-purple-500 to-pink-500",
-    slug: "core-systems"
-  },
-  {
-    icon: "🎨",
-    title: "Interior Maintenance",
-    description: "Complete interior repair and maintenance solutions",
-    features: ["Painting", "Flooring", "General Repairs"],
-    accent: "from-orange-500 to-red-500",
-    slug: "interior-maintenance"
-  },
-  {
-    icon: "✨",
-    title: "Cleaning Services",
-    description: "Professional cleaning and organization services",
-    features: ["House Cleaning", "Carpet Cleaning", "Organization"],
-    accent: "from-teal-500 to-cyan-500",
-    slug: "cleaning-services"
-  },
-  {
-    icon: "🏊",
-    title: "Specialized Services",
-    description: "Specialized home maintenance and improvement",
-    features: ["Pool Services", "Pest Control", "Moving Services"],
-    accent: "from-yellow-500 to-amber-500",
-    slug: "specialized-services"
-  },
-  {
-    icon: "🏗️",
-    title: "Home Improvement",
-    description: "Upgrade your home with modern solutions",
-    features: ["Smart Home", "Security", "Entertainment"],
-    accent: "from-rose-500 to-pink-500",
-    slug: "home-improvement"
-  },
-  {
-    icon: "📋",
-    title: "Assessment Services",
-    description: "Professional home evaluation and inspections",
-    features: ["Home Inspection", "Energy Audits", "System Analysis"],
-    accent: "from-sky-500 to-blue-500",
-    slug: "assessment-services"
-  }
-];
+import { ServiceCategory } from '@/lib/categories';
 
 export default function Services() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [categories, setCategories] = useState<ServiceCategory[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    fetchCategories();
+  }, []);
+
+  const fetchCategories = async () => {
+    try {
+      const response = await fetch('/api/categories');
+      const data = await response.json();
+      
+      if (response.ok) {
+        setCategories(data.categories);
+      } else {
+        console.error('Failed to fetch categories:', data.error);
+        // Fallback to static data if API fails
+        const { defaultCategories } = await import('@/lib/categories');
+        setCategories(defaultCategories);
+      }
+    } catch (error) {
+      console.error('Error fetching categories:', error);
+      // Fallback to static data if API fails
+      const { defaultCategories } = await import('@/lib/categories');
+      setCategories(defaultCategories);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  if (isLoading) {
+    return (
+      <section id="services" className="py-20 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              Comprehensive Home Services
+            </h2>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+              Loading service categories...
+            </p>
+          </div>
+          <div className="flex items-center justify-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section id="services" className="py-20 bg-gray-50">
@@ -87,8 +70,8 @@ export default function Services() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-          {serviceCategories.map((category, index) => (
-            <Link href={`/services/${category.slug}`} key={index}>
+          {categories.map((category, index) => (
+            <Link href={`/services/${category.slug}`} key={category.id}>
               <div
                 className="relative group h-full"
                 onMouseEnter={() => setHoveredIndex(index)}
@@ -100,7 +83,7 @@ export default function Services() {
                   </div>
 
                   <h3 className="text-xl font-semibold text-gray-900 mb-3">
-                    {category.title}
+                    {category.name}
                   </h3>
                   
                   <p className="text-gray-600 mb-6">
@@ -108,17 +91,22 @@ export default function Services() {
                   </p>
 
                   <div className="space-y-3">
-                    {category.features.map((feature, fIndex) => (
+                    {category.subcategories.slice(0, 3).map((subcategory) => (
                       <div
-                        key={fIndex}
+                        key={subcategory.id}
                         className={`flex items-center gap-2 transition-all duration-300 ${
                           hoveredIndex === index ? 'transform translate-x-2' : ''
                         }`}
                       >
                         <div className={`w-2 h-2 rounded-full bg-gradient-to-r ${category.accent}`} />
-                        <span className="text-gray-600">{feature}</span>
+                        <span className="text-gray-600">{subcategory.name}</span>
                       </div>
                     ))}
+                    {category.subcategories.length > 3 && (
+                      <div className="text-sm text-gray-500 italic">
+                        +{category.subcategories.length - 3} more
+                      </div>
+                    )}
                   </div>
 
                   <div className="absolute bottom-6 right-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
