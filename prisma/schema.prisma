@@ -23,4 +23,77 @@ model WaitlistEntry {
   city      String
   services  Json?    // Store services as JSON
   createdAt DateTime @default(now())
+}
+
+model Provider {
+  id          String   @id @default(cuid())
+  email       String   @unique
+  firstName   String
+  lastName    String
+  phoneNumber String?
+  services    Json?    // Services offered by provider
+  
+  // Calendar settings
+  bufferTime  Int      @default(15) // Buffer time in minutes between bookings
+  
+  // Relations
+  availabilities Availability[]
+  bookings       Booking[]
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Availability {
+  id          String   @id @default(cuid())
+  providerId  String
+  
+  // Recurring pattern
+  dayOfWeek   Int      // 0 = Sunday, 1 = Monday, etc.
+  startTime   String   // Format: "HH:mm" (24-hour)
+  endTime     String   // Format: "HH:mm" (24-hour)
+  isRecurring Boolean  @default(true)
+  
+  // Override for specific dates
+  specificDate DateTime?
+  isBlocked    Boolean  @default(false) // For blocking off times
+  
+  // Relations
+  provider    Provider @relation(fields: [providerId], references: [id], onDelete: Cascade)
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@index([providerId, dayOfWeek])
+  @@index([providerId, specificDate])
+}
+
+model Booking {
+  id          String   @id @default(cuid())
+  providerId  String
+  
+  // Booking details
+  startTime   DateTime
+  endTime     DateTime
+  duration    Int      // Duration in minutes
+  
+  // Customer details (simplified for now)
+  customerName  String
+  customerEmail String
+  customerPhone String?
+  
+  // Service details
+  serviceType String
+  description String?
+  
+  // Status
+  status      String   @default("pending") // pending, confirmed, cancelled, completed
+  
+  // Relations
+  provider    Provider @relation(fields: [providerId], references: [id], onDelete: Cascade)
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@index([providerId, startTime])
 } 
