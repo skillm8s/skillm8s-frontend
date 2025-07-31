@@ -60,6 +60,12 @@ export default function Header() {
               </Link>
             ))}
             <Link
+              href="/book"
+              className="bg-green-600 text-white px-6 py-2.5 rounded-xl hover:bg-green-700 transform hover:scale-105 transition-all duration-200 shadow-md hover:shadow-xl hover:shadow-green-200 font-medium mr-2"
+            >
+              Book Now
+            </Link>
+            <Link
               href="#waitlist"
               className="bg-blue-600 text-white px-6 py-2.5 rounded-xl hover:bg-blue-700 transform hover:scale-105 transition-all duration-200 shadow-md hover:shadow-xl hover:shadow-blue-200 font-medium"
             >
@@ -105,6 +111,13 @@ export default function Header() {
                 {item.name}
               </Link>
             ))}
+            <Link
+              href="/book"
+              onClick={() => setIsMenuOpen(false)}
+              className="block px-4 py-2 text-center bg-green-600 text-white rounded-xl hover:bg-green-700 transition-colors duration-200 mb-2"
+            >
+              Book Now
+            </Link>
             <Link
               href="#waitlist"
               onClick={() => setIsMenuOpen(false)}

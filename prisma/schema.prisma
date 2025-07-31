@@ -23,4 +23,98 @@ model WaitlistEntry {
   city      String
   services  Json?    // Store services as JSON
   createdAt DateTime @default(now())
+}
+
+model Provider {
+  id          String   @id @default(cuid())
+  firstName   String
+  lastName    String
+  email       String   @unique
+  phone       String?
+  company     String?
+  description String?
+  services    String[] // Array of service categories they provide
+  city        String
+  state       String
+  country     String
+  isActive    Boolean  @default(true)
+  rating      Float?   @default(0)
+  reviewCount Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  // Relations
+  bookings     Booking[]
+  availability ProviderAvailability[]
+}
+
+model Service {
+  id          String    @id @default(cuid())
+  name        String
+  category    String
+  description String?
+  basePrice   Float?
+  duration    Int       // Duration in minutes
+  isActive    Boolean   @default(true)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  
+  // Relations
+  bookings Booking[]
+}
+
+model Booking {
+  id               String        @id @default(cuid())
+  customerId       String        // For now, just store as string (could be linked to User model later)
+  customerName     String
+  customerEmail    String
+  customerPhone    String?
+  providerId       String
+  serviceId        String
+  
+  // Booking details
+  scheduledDate    DateTime
+  scheduledTime    String        // Store as "HH:MM" format
+  duration         Int           // Duration in minutes
+  serviceAddress   String
+  addressLat       Float?
+  addressLng       Float?
+  
+  // Additional details
+  requirements     String?       // Special requirements from customer
+  estimatedPrice   Float?
+  finalPrice       Float?
+  
+  // Status tracking
+  status           BookingStatus @default(PENDING)
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+  
+  // Relations
+  provider Provider @relation(fields: [providerId], references: [id])
+  service  Service  @relation(fields: [serviceId], references: [id])
+}
+
+model ProviderAvailability {
+  id         String   @id @default(cuid())
+  providerId String
+  dayOfWeek  Int      // 0-6 (Sunday to Saturday)
+  startTime  String   // "09:00" format
+  endTime    String   // "17:00" format
+  isActive   Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  
+  // Relations
+  provider Provider @relation(fields: [providerId], references: [id])
+  
+  @@unique([providerId, dayOfWeek, startTime])
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
 } 
