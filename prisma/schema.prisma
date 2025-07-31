@@ -23,4 +23,77 @@ model WaitlistEntry {
   city      String
   services  Json?    // Store services as JSON
   createdAt DateTime @default(now())
-} 
+}
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  password      String
+  firstName     String
+  lastName      String
+  userType      UserType  // 'CUSTOMER' or 'PROVIDER'
+  emailVerified Boolean   @default(false)
+  
+  // Profile information
+  phone         String?
+  country       String?
+  state         String?
+  city          String?
+  address       String?
+  
+  // Provider-specific fields
+  services      Json?     // Store services as JSON for providers
+  bio           String?
+  experience    String?
+  
+  // Timestamps
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  // Relations
+  sessions              Session[]
+  emailVerificationTokens VerificationToken[]
+  passwordResetTokens   PasswordResetToken[]
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  userId    String
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  id        String   @id @default(cuid())
+  userId    String
+  token     String   @unique
+  type      TokenType
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model PasswordResetToken {
+  id        String   @id @default(cuid())
+  userId    String
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  used      Boolean  @default(false)
+  
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+enum UserType {
+  CUSTOMER
+  PROVIDER
+}
+
+enum TokenType {
+  EMAIL_VERIFICATION
+  PASSWORD_RESET
+}

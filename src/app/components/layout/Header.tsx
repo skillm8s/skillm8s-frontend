@@ -2,10 +2,13 @@
 
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
+import { AuthUser } from '@/lib/auth';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [user, setUser] = useState<AuthUser | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -15,6 +18,32 @@ export default function Header() {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const response = await fetch('/api/auth/me');
+        const data = await response.json();
+        setUser(data.user);
+      } catch (error) {
+        console.error('Auth check failed:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    checkAuth();
+  }, []);
+
+  const handleLogout = async () => {
+    try {
+      await fetch('/api/auth/logout', { method: 'POST' });
+      setUser(null);
+      window.location.href = '/';
+    } catch (error) {
+      console.error('Logout failed:', error);
+    }
+  };
 
   return (
     <header className={`fixed w-full z-50 transition-all duration-300 ${
@@ -59,12 +88,44 @@ export default function Header() {
                 <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 transition-all duration-200 group-hover:w-full"></span>
               </Link>
             ))}
-            <Link
-              href="#waitlist"
-              className="bg-blue-600 text-white px-6 py-2.5 rounded-xl hover:bg-blue-700 transform hover:scale-105 transition-all duration-200 shadow-md hover:shadow-xl hover:shadow-blue-200 font-medium"
-            >
-              Join Waitlist
-            </Link>
+            
+            {/* Authentication Section */}
+            {loading ? (
+              <div className="animate-pulse bg-gray-200 h-10 w-20 rounded"></div>
+            ) : user ? (
+              <div className="flex items-center space-x-4">
+                <span className="text-gray-700 font-medium">
+                  Hi, {user.firstName}
+                </span>
+                <Link
+                  href="/dashboard"
+                  className="text-blue-600 hover:text-blue-700 font-medium transition-colors duration-200"
+                >
+                  Dashboard
+                </Link>
+                <button
+                  onClick={handleLogout}
+                  className="text-gray-600 hover:text-gray-700 font-medium transition-colors duration-200"
+                >
+                  Logout
+                </button>
+              </div>
+            ) : (
+              <div className="flex items-center space-x-4">
+                <Link
+                  href="/auth/login"
+                  className="text-gray-600 hover:text-blue-600 font-medium transition-colors duration-200"
+                >
+                  Sign In
+                </Link>
+                <Link
+                  href="/auth/register"
+                  className="bg-blue-600 text-white px-6 py-2.5 rounded-xl hover:bg-blue-700 transform hover:scale-105 transition-all duration-200 shadow-md hover:shadow-xl hover:shadow-blue-200 font-medium"
+                >
+                  Get Started
+                </Link>
+              </div>
+            )}
           </nav>
 
           {/* Mobile Menu Button */}
@@ -105,13 +166,48 @@ export default function Header() {
                 {item.name}
               </Link>
             ))}
-            <Link
-              href="#waitlist"
-              onClick={() => setIsMenuOpen(false)}
-              className="block px-4 py-2 text-center bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors duration-200"
-            >
-              Join Waitlist
-            </Link>
+            
+            {/* Mobile Authentication */}
+            {loading ? (
+              <div className="animate-pulse bg-gray-200 h-10 rounded mx-4"></div>
+            ) : user ? (
+              <div className="px-4 space-y-2">
+                <div className="text-gray-700 font-medium">Hi, {user.firstName}</div>
+                <Link
+                  href="/dashboard"
+                  onClick={() => setIsMenuOpen(false)}
+                  className="block px-4 py-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors duration-200"
+                >
+                  Dashboard
+                </Link>
+                <button
+                  onClick={() => {
+                    handleLogout();
+                    setIsMenuOpen(false);
+                  }}
+                  className="block w-full text-left px-4 py-2 text-gray-600 hover:bg-gray-50 rounded-lg transition-colors duration-200"
+                >
+                  Logout
+                </button>
+              </div>
+            ) : (
+              <>
+                <Link
+                  href="/auth/login"
+                  onClick={() => setIsMenuOpen(false)}
+                  className="block px-4 py-2 text-gray-600 hover:bg-gray-50 rounded-lg transition-colors duration-200"
+                >
+                  Sign In
+                </Link>
+                <Link
+                  href="/auth/register"
+                  onClick={() => setIsMenuOpen(false)}
+                  className="block px-4 py-2 text-center bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors duration-200"
+                >
+                  Get Started
+                </Link>
+              </>
+            )}
           </div>
         </div>
       </div>
