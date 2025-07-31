@@ -33,7 +33,7 @@ export async function POST(request: Request) {
         country,
         state,
         city,
-        services: services.length > 0 ? services : null,
+        services: services && services.length > 0 ? services : null,
       },
     });
 
