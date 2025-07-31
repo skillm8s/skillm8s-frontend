@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
+// import { prisma } from '@/lib/prisma';
 
 export async function POST(request: Request) {
   try {
@@ -24,6 +24,8 @@ export async function POST(request: Request) {
     }
 
     // Create waitlist entry
+    // TODO: Re-enable once Prisma is configured
+    /*
     const entry = await prisma.waitlistEntry.create({
       data: {
         firstName,
@@ -36,6 +38,21 @@ export async function POST(request: Request) {
         services: services.length > 0 ? services : null,
       },
     });
+    */
+
+    // Mock response for now
+    const entry = {
+      id: Date.now().toString(),
+      firstName,
+      lastName,
+      email,
+      userType,
+      country,
+      state,
+      city,
+      services: services.length > 0 ? services : null,
+      createdAt: new Date().toISOString()
+    };
 
     return NextResponse.json(
       { message: 'Successfully joined waitlist', entry },
